@@ -1,0 +1,17 @@
+{
+  "name": "efs-project",
+  "private": true,
+  "version": "1.0.0",
+  "devDependencies": {
+    "lerna": "^6.0.3"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "lerna run start",
+    "test": "lerna run test",
+    "new-version" : "lerna version --conventional-commit --yes",
+    "diff": "lerna diff"
+  }
+}
