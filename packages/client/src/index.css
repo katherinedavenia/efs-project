@@ -13,5 +13,14 @@ code {
 }
 
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif !important;
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+  overflow: scroll;
+  height: 400px;
+}
+
+.css-keh8f-MuiSlider-root {
+  color: #4dc7a2 !important;
 }

@@ -18,16 +18,15 @@ const getAllFishery = async (req, res, next) => {
 };
 
 const getAllFisheryByFilter = async (req, res, next) => {
-  const { commodity, province, town, size } = req.query;
-  const { startPrice, endPrice, startDate, endDate } = req.body;
+  const { commodity, area, size, startPrice, endPrice, startDate, endDate } =
+    req.query;
 
   try {
     const action = new FisheryAction();
 
     const project = await action.getAllByFilter({
       commodity,
-      province,
-      town,
+      area,
       size,
       startPrice,
       endPrice,
@@ -56,6 +55,23 @@ const getFisheryById = async (req, res, next) => {
 
     const result = {
       message: "Successfully get fishery data by id",
+      data: project,
+    };
+
+    res.status(200).json(result);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const getCategories = async (req, res, next) => {
+  try {
+    const action = new FisheryAction();
+
+    const project = await action.getAllCategories();
+
+    const result = {
+      message: "Successfully get all commodities",
       data: project,
     };
 
@@ -136,6 +152,7 @@ module.exports = {
   getAllFishery,
   getAllFisheryByFilter,
   getFisheryById,
+  getCategories,
   createFishery,
   updateFishery,
   deleteFishery,

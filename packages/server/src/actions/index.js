@@ -7,13 +7,17 @@ class GetFisheryAction {
     const { data } = await axios.get(
       "https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list"
     );
-    return data;
+
+    return data
+      .filter((item) => item.uuid !== null)
+      .sort(function (a, b) {
+        return new Date(b.tgl_parsed) - new Date(a.tgl_parsed);
+      });
   }
 
   async getAllByFilter({
     commodity,
-    province,
-    town,
+    area,
     size,
     startPrice,
     endPrice,
@@ -21,13 +25,10 @@ class GetFisheryAction {
     endDate,
   }) {
     const commodityPath = commodity ? `"komoditas":"${commodity}"` : "";
-    const provincePath = province ? `"area_provinsi":"${province}"` : "";
-    const townPath = town ? `"area_kota":"${town}"` : "";
+    const areaPath = area ? `"area_kota":"${area}"` : "";
     const sizePath = size ? `"size":"${size}"` : "";
 
-    const paths = [commodityPath, provincePath, townPath, sizePath].filter(
-      (path) => !!path
-    );
+    const paths = [commodityPath, areaPath, sizePath].filter((path) => !!path);
 
     const { data } = await axios.get(
       `https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list?search={${paths.join(
@@ -38,7 +39,13 @@ class GetFisheryAction {
     const filteringDate = startDate && endDate;
     const filteringPrice = startPrice && endPrice;
 
-    const newData = data.filter((item) => {
+    const filteredData = data
+      .filter((value) => JSON.stringify(value) !== "{}")
+      .sort(function (a, b) {
+        return new Date(b.tgl_parsed) - new Date(a.tgl_parsed);
+      });
+
+    const newData = filteredData.filter((item) => {
       if (filteringDate || filteringPrice) {
         return (
           (!filteringDate ||
@@ -64,7 +71,45 @@ class GetFisheryAction {
       `https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list?search={"uuid":"${id}"}`
     );
 
-    return data;
+    return data.filter((item) => item.uuid !== null);
+  }
+
+  async getAllCategories() {
+    const { data } = await axios.get(
+      "https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list"
+    );
+
+    const commodityCategories = data
+      .map((item) => item.komoditas)
+      .reduce(function (a, b) {
+        if (a.indexOf(b) < 0 && b !== null) a.push(b);
+        return a;
+      }, []);
+
+    const sizeCategories = data
+      .map((item) => item.size)
+      .reduce(function (a, b) {
+        if (a.indexOf(b) < 0 && b !== null) a.push(b);
+        return a;
+      }, []);
+
+    const areaCategories = data
+      .map(
+        (item) =>
+          item.area_kota !== null &&
+          item.area_provinsi !== null &&
+          `${item.area_kota}, ${item.area_provinsi}`
+      )
+      .reduce(function (a, b) {
+        if (a.indexOf(b) < 0 && b !== false) a.push(b);
+        return a;
+      }, []);
+
+    return {
+      commodity: commodityCategories,
+      size: sizeCategories,
+      area: areaCategories,
+    };
   }
 
   async add({ commodity, province, town, size, price }) {

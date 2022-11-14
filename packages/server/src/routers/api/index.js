@@ -6,12 +6,14 @@ const {
   updateFishery,
   deleteFishery,
   getAllFisheryByFilter,
+  getCategories,
 } = require("./controllers");
 
 const fisheryRouter = Router();
 
 fisheryRouter.get("/fishery", getAllFishery);
 fisheryRouter.get("/fishery/filter", getAllFisheryByFilter);
+fisheryRouter.get("/fishery/categories", getCategories);
 fisheryRouter.get("/fishery/:id", getFisheryById);
 fisheryRouter.post("/fishery", createFishery);
 fisheryRouter.put("/fishery/:id", updateFishery);
