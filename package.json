@@ -11,7 +11,11 @@
   "scripts": {
     "start": "lerna run start",
     "test": "lerna run test",
-    "new-version" : "lerna version --conventional-commit --yes",
+    "new-version": "lerna version --conventional-commit --yes",
     "diff": "lerna diff"
+  },
+  "dependencies": {
+    "moment": "^2.29.4",
+    "uuid": "^9.0.0"
   }
 }

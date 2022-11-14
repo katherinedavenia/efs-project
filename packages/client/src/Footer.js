@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => (
   <Box
     sx={{
-      backgroundColor: "#dbf3f3",
+      backgroundColor: "#379477",
       borderTop: "2px solid #e8e8e8",
     }}
   >
@@ -12,7 +12,7 @@ const Footer = () => (
       <Box
         sx={{
           display: "flex",
-          justifyContent: "end",
+          justifyContent: "space-between",
           alignItems: "center",
           height: "100px",
           px: { sm: "24px", lg: "50px" },
@@ -23,7 +23,7 @@ const Footer = () => (
             sx={{
               cursor: "pointer",
               fontWeight: 300,
-              color: "#475266",
+              color: "#fff",
               fontSize: "18px",
               "&:hover": {
                 color: "#000",
@@ -31,6 +31,21 @@ const Footer = () => (
             }}
           >
             API by Stein
+          </Typography>
+        </Box>
+        <Box onClick={() => window.open("https://docs.reactjs.org/")}>
+          <Typography
+            sx={{
+              cursor: "pointer",
+              fontWeight: 300,
+              color: "#fff",
+              fontSize: "18px",
+              "&:hover": {
+                color: "#000",
+              },
+            }}
+          >
+            © Powered by React.js
           </Typography>
         </Box>
       </Box>

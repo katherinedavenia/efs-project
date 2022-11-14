@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Container, Typography } from "@mui/material";
-import { SetMeal } from "@mui/icons-material";
+import { AccountCircle } from "@mui/icons-material";
 import PropTypes from "prop-types";
 
 const Navbar = () => (
   <Box
     sx={{
-      backgroundColor: "#f5f5f5",
+      backgroundColor: "#fff",
       borderBottom: "2px solid #e8e8e8",
       position: "absolute",
       width: "100%",
@@ -19,7 +19,7 @@ const Navbar = () => (
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "60px",
+          height: "70px",
           px: { sm: "30px", md: "50px" },
         }}
       >
@@ -31,40 +31,31 @@ const Navbar = () => (
             alignItems: "center",
           }}
         >
-          <Typography
-            sx={{
-              fontWeight: 600,
-              color: "#475266",
-              fontSize: { xs: "18px", sm: "22px" },
-            }}
-          >
-            Welcome to your Dashboard
-          </Typography>
-          <SetMeal
-            sx={{
-              ml: "7px",
-              width: "24px",
-              height: "auto",
-              color: "#475266",
-              rotate: "180deg",
-            }}
+          <img
+            src="https://efishery.com/wp-content/uploads/2021/10/logo-retina-colored.png"
+            style={{ objectFit: "contain", height: "34px", width: "auto" }}
           />
-        </Box>
-        <Box onClick={() => window.open("https://docs.reactjs.org/")}>
           <Typography
+            fontWeight={700}
             sx={{
-              cursor: "pointer",
-              fontWeight: 300,
-              color: "#475266",
-              fontSize: { xs: "12px", sm: "16px" },
-              "&:hover": {
-                color: "#000",
-              },
+              ml: "12px",
+              color: "#038767",
+              textTransform: "uppercase",
+              fontSize: "16px",
             }}
           >
-            Powered by React.js
+            Dashboard
           </Typography>
         </Box>
+        <AccountCircle
+          sx={{
+            cursor: "pointer",
+            height: "34px",
+            width: "auto",
+            color: "#4CC7A0",
+            "&:hover": { opacity: ".7" },
+          }}
+        />
       </Box>
     </Container>
   </Box>
