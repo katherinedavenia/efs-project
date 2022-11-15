@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Button, Divider, TableHead, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,14 +11,13 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import DeleteItemModal from "./DeleteItemModal";
 import FilterBox from "./FilterBox";
-import AddItemModal from "./AddItemModal";
-import EditItemModal from "./EditItemModal";
+import WriteItemModal from "./WriteItemModal";
 
 function createData(commodity, area, size, price, date, id) {
   return { commodity, area, size, price, date, id };
 }
 
-const DataTable = ({ data, setOpenDeleteModal, setOpenEditModal }) => {
+const DataTable = ({ data, setOpenDeleteModal, setOpenWriteModal }) => {
   const rows = (data || []).map((item) => {
     return createData(
       item.komoditas || "-",
@@ -104,7 +103,7 @@ const DataTable = ({ data, setOpenDeleteModal, setOpenEditModal }) => {
                 >
                   <Box
                     onClick={() =>
-                      setOpenEditModal({ isOpen: true, data: row })
+                      setOpenWriteModal({ isOpen: true, data: row })
                     }
                   >
                     <Edit
@@ -157,15 +156,12 @@ const CommodityDetails = ({
   handleDeleteItem,
   setOpenDeleteModal,
   openDeleteModal,
-  setOpenEditModal,
-  openEditModal,
+  setOpenWriteModal,
+  openWriteModal,
   pickedPrice,
   setPickedPrice,
-  openAddModal,
-  setOpenAddModal,
-  handleAddItem,
   handleEditItem,
-  formik,
+  handleAddItem,
   pickedDate,
   setPickedDate,
 }) => {
@@ -173,22 +169,34 @@ const CommodityDetails = ({
 
   return (
     <>
-      <AddItemModal
-        openAddModal={openAddModal}
-        setOpenAddModal={setOpenAddModal}
-        onClick={() => handleAddItem()}
-        formik={formik}
-      />
       <DeleteItemModal
         openDeleteModal={openDeleteModal}
         setOpenDeleteModal={setOpenDeleteModal}
         onClick={() => handleDeleteItem(openDeleteModal.id)}
       />
-      <EditItemModal
-        openEditModal={openEditModal}
-        setOpenEditModal={setOpenEditModal}
-        onClick={() => handleEditItem(openEditModal.data.id)}
-        formik={formik}
+      <WriteItemModal
+        openWriteModal={openWriteModal}
+        setOpenWriteModal={setOpenWriteModal}
+        onClick={(formik) =>
+          openWriteModal.data?.id
+            ? handleEditItem(
+                openWriteModal.data?.id,
+                formik.values.commodity?.toUpperCase(),
+                formik.values.area?.split(",").slice(-2)[0].toUpperCase(),
+                formik.values.area?.split(",").slice(-1)[0].toUpperCase(),
+                formik.values.size,
+                formik.values.price
+              )
+            : handleAddItem(
+                formik.values.commodity?.toUpperCase(),
+                formik.values.area?.split(",").slice(-2)[0].toUpperCase(),
+                formik.values.area?.split(",").slice(-1)[0].toUpperCase(),
+                formik.values.size,
+                formik.values.price
+              )
+        }
+        data={openWriteModal.data}
+        title={openWriteModal.data?.id ? "Edit Item" : "Add New Item"}
       />
 
       <Box
@@ -220,7 +228,7 @@ const CommodityDetails = ({
           {currPathname}
         </Typography>
         <Button
-          onClick={() => setOpenAddModal(true)}
+          onClick={() => setOpenWriteModal({ isOpen: true })}
           variant="contained"
           sx={{ backgroundColor: "#379477" }}
         >
@@ -228,7 +236,7 @@ const CommodityDetails = ({
         </Button>
       </Box>
 
-      <Divider sx={{ m: "8px 0 70px" }} />
+      <Divider sx={{ m: "8px 0 50px" }} />
 
       <FilterBox
         sizeCategories={sizeCategories}
@@ -246,7 +254,7 @@ const CommodityDetails = ({
       <DataTable
         data={data}
         setOpenDeleteModal={setOpenDeleteModal}
-        setOpenEditModal={setOpenEditModal}
+        setOpenWriteModal={setOpenWriteModal}
       />
     </>
   );

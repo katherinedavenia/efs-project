@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Box } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../constants/api";
 import CommodityDetails from "../components/CommodityDetails";
 import Loading from "../components/Loading";
-import { useFormik } from "formik";
 import { toast } from "react-toastify";
-import moment from "moment";
+import useDebounce from "../hooks/useDebounce";
 
 const DashboardCommodityDetails = () => {
   const location = useLocation();
@@ -22,7 +21,7 @@ const DashboardCommodityDetails = () => {
     isOpen: false,
     id: null,
   });
-  const [openEditModal, setOpenEditModal] = useState({
+  const [openWriteModal, setOpenWriteModal] = useState({
     isOpen: false,
     data: null,
   });
@@ -38,41 +37,26 @@ const DashboardCommodityDetails = () => {
   const [pickedPrice, setPickedPrice] = useState([0, 200000]);
   const [pickedDate, setPickedDate] = useState({ start: "", end: "" });
 
-  const sizeFilter = pickedSize && `&size=${pickedSize}`;
-  const areaFilter = area && `&area=${area}`;
-  const priceFilter =
-    pickedPrice && `&startPrice=${pickedPrice[0]}&endPrice=${pickedPrice[1]}`;
-  const dateFilter =
-    (pickedDate.start || pickedDate.end) &&
-    `&startDate=${moment(pickedDate?.start)}&endDate=${moment(
-      pickedDate?.end
-    )}`;
-
-  console.log();
-
-  const additionalFilters = [
-    sizeFilter,
-    areaFilter,
-    priceFilter,
-    dateFilter,
-  ].filter((filter) => !!filter);
-
-  console.log(
-    `${API_URL}/fishery/filter?commodity=${currPathname}${additionalFilters
-      .join(",")
-      .replace(/,/g, "")}`,
-    pickedDate
+  const filters = useMemo(
+    () => ({
+      size: pickedSize,
+      area,
+      startPirce: pickedPrice[0] || "",
+      endPrice: pickedPrice[1] || "",
+      startDate: pickedDate?.start || "",
+      endDate: pickedDate?.end || "",
+      commodity: currPathname !== "ALL COMMODITIES" ? currPathname : "",
+    }),
+    [pickedSize, area, pickedPrice, pickedDate, currPathname]
   );
+
+  const debouncedFilters = useDebounce(filters, 500);
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(
-        currPathname === "ALL COMMODITIES"
-          ? `${API_URL}/fishery/filter?${additionalFilters}`
-          : `${API_URL}/fishery/filter?commodity=${currPathname}${additionalFilters
-              .join(",")
-              .replace(/,/g, "")}`
-      );
+      const { data } = await axios.get(`${API_URL}/fishery/filter`, {
+        params: debouncedFilters,
+      });
       setCommodityData(data?.data);
     } catch (e) {
       toast.error(e.message || "Server Error", {
@@ -86,14 +70,7 @@ const DashboardCommodityDetails = () => {
 
   useEffect(() => {
     fetchData();
-  }, [
-    pickedSize,
-    pickedArea,
-    pickedPrice[0],
-    pickedPrice[1],
-    pickedDate?.start,
-    pickedDate?.end,
-  ]);
+  }, [debouncedFilters]);
 
   useEffect(() => {
     (async () => {
@@ -112,19 +89,6 @@ const DashboardCommodityDetails = () => {
     })();
   }, []);
 
-  const formik = useFormik({
-    initialValues: {
-      commodity: "",
-      area: "",
-      size: null,
-      price: null,
-      editCommodity: openEditModal.data?.commodity,
-      editArea: openEditModal.data?.area,
-      editSize: openEditModal.data?.size,
-      editPrice: openEditModal.data?.price,
-    },
-  });
-
   const handleDeleteItem = async (id) => {
     try {
       await axios.delete(`${API_URL}/fishery/${id}`);
@@ -142,14 +106,14 @@ const DashboardCommodityDetails = () => {
     }
   };
 
-  const handleAddItem = async () => {
+  const handleAddItem = async (commodity, town, province, size, price) => {
     try {
       await axios.post(`${API_URL}/fishery`, {
-        commodity: formik.values.commodity.toUpperCase(),
-        town: formik.values.area?.split(",").slice(-2)[0].toUpperCase(),
-        province: formik.values.area?.split(",").slice(-1)[0].toUpperCase(),
-        size: formik.values.size,
-        price: formik.values.price,
+        commodity,
+        town,
+        province,
+        size,
+        price,
       });
       setOpenAddModal(false);
       toast.success("Item is successfully added!", {
@@ -157,7 +121,6 @@ const DashboardCommodityDetails = () => {
         icon: "🥳",
       });
       fetchData();
-      formik.resetForm();
     } catch (error) {
       toast.error("Cannot add item. Try again!", {
         position: "top-right",
@@ -166,9 +129,16 @@ const DashboardCommodityDetails = () => {
     }
   };
 
-  const handleEditItem = async (id) => {
+  const handleEditItem = async (id, commodity, town, province, size, price) => {
     try {
-      setOpenEditModal(false);
+      await axios.put(`${API_URL}/fishery/${id}`, {
+        commodity,
+        town,
+        province,
+        size,
+        price,
+      });
+      setOpenWriteModal(false);
       toast.success("Item is successfully updated!", {
         position: "top-right",
         icon: "🥳",
@@ -199,15 +169,12 @@ const DashboardCommodityDetails = () => {
           handleDeleteItem={handleDeleteItem}
           setOpenDeleteModal={setOpenDeleteModal}
           openDeleteModal={openDeleteModal}
-          setOpenEditModal={setOpenEditModal}
-          openEditModal={openEditModal}
+          setOpenWriteModal={setOpenWriteModal}
+          openWriteModal={openWriteModal}
           handleEditItem={handleEditItem}
+          handleAddItem={handleAddItem}
           pickedPrice={pickedPrice}
           setPickedPrice={setPickedPrice}
-          openAddModal={openAddModal}
-          setOpenAddModal={setOpenAddModal}
-          handleAddItem={handleAddItem}
-          formik={formik}
           setPickedDate={setPickedDate}
           pickedDate={pickedDate}
         />

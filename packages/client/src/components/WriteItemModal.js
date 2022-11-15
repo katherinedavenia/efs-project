@@ -1,28 +1,40 @@
 import { Edit } from "@mui/icons-material";
 import { Box, Button, Modal, OutlinedInput, Typography } from "@mui/material";
+import { useFormik } from "formik";
 
-const EditItemModal = ({
-  formik,
-  openEditModal,
-  setOpenEditModal,
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const WriteItemModal = ({
+  data,
+  openWriteModal,
+  setOpenWriteModal,
   onClick,
+  title,
 }) => {
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      commodity: data?.commodity,
+      area: data?.area,
+      size: data?.size,
+      price: data?.price.slice(3).replace(/\s./g, ""),
+    },
+  });
 
   return (
     <Modal
-      open={openEditModal.isOpen}
-      onClose={() => setOpenEditModal({ isOpen: false })}
+      open={openWriteModal.isOpen}
+      onClose={() => setOpenWriteModal({ isOpen: false })}
     >
       <Box sx={style}>
         <Box
@@ -45,7 +57,7 @@ const EditItemModal = ({
             component="h2"
             sx={{ color: "darkslategray" }}
           >
-            Edit Item
+            {title}
           </Typography>
         </Box>
         <Box
@@ -61,31 +73,31 @@ const EditItemModal = ({
             fullWidth
             required
             placeholder="Commodity*"
-            value={formik.values.editCommodity}
-            onChange={formik.handleChange("editCommodity")}
+            value={formik.values.commodity}
+            onChange={formik.handleChange("commodity")}
           />
           <OutlinedInput
             fullWidth
             required
             placeholder="Area* (ex: Cirebon, Jawa Barat)"
-            value={formik.values.editArea}
-            onChange={formik.handleChange("editArea")}
+            value={formik.values.area}
+            onChange={formik.handleChange("area")}
           />
           <OutlinedInput
             fullWidth
             required
             type="number"
             placeholder="Size*"
-            value={formik.values.editSize}
-            onChange={formik.handleChange("editSize")}
+            value={formik.values.size}
+            onChange={formik.handleChange("size")}
           />
           <OutlinedInput
             fullWidth
             required
             type="number"
             placeholder="Price* (ex: 25000)"
-            value={formik.values.editPrice}
-            onChange={formik.handleChange("editPrice")}
+            value={formik.values.price}
+            onChange={formik.handleChange("price")}
           />
         </Box>
         <Box
@@ -97,7 +109,7 @@ const EditItemModal = ({
           }}
         >
           <Button
-            onClick={onClick}
+            onClick={() => onClick(formik)}
             variant="contained"
             sx={{ mt: "30px", color: "#fff" }}
           >
@@ -109,4 +121,4 @@ const EditItemModal = ({
   );
 };
 
-export default EditItemModal;
+export default WriteItemModal;

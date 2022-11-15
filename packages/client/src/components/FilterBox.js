@@ -28,7 +28,7 @@ const FilterByDate = ({ pickedDate, setPickedDate }) => {
         name="date-start"
         type="date"
         value={pickedDate.start}
-        onChange={(event) => setPickedDate({ start: event.target.value })}
+        onChange={(event) => setPickedDate({ ...pickedDate, start: event.target.value })}
       />
       <Typography sx={{ fontSize: "20px", fontWeight: 200, mx: "12px" }}>
         to
@@ -38,7 +38,7 @@ const FilterByDate = ({ pickedDate, setPickedDate }) => {
         name="date-end"
         type="date"
         value={pickedDate.end}
-        onChange={(e) => setPickedDate({ end: e.target.value })}
+        onChange={(e) => setPickedDate({ ...pickedDate, end: e.target.value })}
       />
     </Box>
   );

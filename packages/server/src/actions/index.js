@@ -49,10 +49,10 @@ class GetFisheryAction {
       if (filteringDate || filteringPrice) {
         return (
           (!filteringDate ||
-            (moment(item.tgl_parsed).isBefore(endDate) &&
-              moment(item.tgl_parsed).isAfter(startDate)) ||
-            moment(item.tgl_parsed).isSame(startDate) ||
-            moment(item.tgl_parsed).isSame(endDate)) &&
+            (moment(item.tgl_parsed).isBefore(endDate, "date") &&
+              moment(item.tgl_parsed).isAfter(startDate, "date")) ||
+            moment(item.tgl_parsed).isSame(startDate, "date") ||
+            moment(item.tgl_parsed).isSame(endDate, "date")) &&
           (!filteringPrice ||
             (Number(item.price) > Number(startPrice) &&
               Number(item.price) < Number(endPrice)) ||
@@ -60,7 +60,7 @@ class GetFisheryAction {
             Number(item.price) === Number(endPrice))
         );
       }
-      return item;
+      return true;
     });
 
     return newData;
