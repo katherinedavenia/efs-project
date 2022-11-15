@@ -110,40 +110,9 @@ const Banner = () => (
   </Box>
 );
 
-const data = [
-  {
-    title: "Total All Commodities",
-    value: "500",
-    src: commodities,
-  },
-  {
-    title: "Total Commodity Categories",
-    value: "500",
-    src: categories,
-  },
-  {
-    title: "Highest Commodity Most Records",
-    value: "500",
-    src: records,
-  },
-  {
-    title: "Total Areas in Indonesia",
-    value: "500",
-    src: areas,
-  },
-  {
-    title: "Highest Commodity Price",
-    value: "500",
-    src: highest,
-  },
-  {
-    title: "Cheapest Commodity Price",
-    value: "500",
-    src: cheapest,
-  },
-];
+const images = [commodities, categories, records, areas, highest, cheapest];
 
-const General = () => {
+const General = ({ data }) => {
   return (
     <Box>
       <Banner />
@@ -154,12 +123,12 @@ const General = () => {
           gridTemplateColumns: "repeat(3, 1fr)",
         }}
       >
-        {data.map((item) => (
+        {data.map((item, index) => (
           <Box
             sx={{
               height: "auto",
-              width: "80%",
-              mb: "10%",
+              width: "85%",
+              mb: "8%",
               backgroundColor: "whitesmoke",
               display: "flex",
               flexDirection: "column",
@@ -170,7 +139,7 @@ const General = () => {
             }}
           >
             <img
-              src={item.src}
+              src={images[index]}
               style={{
                 width: "100%",
                 height: "auto",
@@ -189,7 +158,7 @@ const General = () => {
             >
               {item.title}
             </Typography>
-            <Typography sx={{ mt: "4px", fontSize: "24px", fontWeight: 600 }}>
+            <Typography sx={{ mt: "4px", fontSize: "22px", fontWeight: 600 }}>
               {item.value}
             </Typography>
           </Box>

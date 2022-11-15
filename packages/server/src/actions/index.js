@@ -112,6 +112,100 @@ class GetFisheryAction {
     };
   }
 
+  async getAllStatistics() {
+    const { data } = await axios.get(
+      "https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list"
+    );
+
+    const filteredData = data
+      .filter((item) => item.uuid !== null)
+      .sort(function (a, b) {
+        return new Date(b.tgl_parsed) - new Date(a.tgl_parsed);
+      });
+
+    const commodityCategories = filteredData
+      .map((item) => item.komoditas)
+      .reduce(function (a, b) {
+        if (a.indexOf(b) < 0 && b !== null) a.push(b);
+        return a;
+      }, []);
+
+    const areaCategories = filteredData
+      .map(
+        (item) =>
+          item.area_kota !== null &&
+          item.area_provinsi !== null &&
+          `${item.area_kota}, ${item.area_provinsi}`
+      )
+      .reduce(function (a, b) {
+        if (a.indexOf(b) < 0 && b !== false) a.push(b);
+        return a;
+      }, []);
+
+    const prices = filteredData
+      .map((item) => Number(item.price))
+      .filter(function (n) {
+        return !isNaN(n);
+      });
+
+    const highestCommodityPrice = Math.max.apply(null, prices);
+
+    const lowestCommodityPrice = Math.min.apply(null, prices);
+
+    const highestCommodityName = filteredData.find(
+      (item) => item.price == highestCommodityPrice
+    );
+
+    const lowestCommodityName = filteredData.find(
+      (item) => item.price == lowestCommodityPrice
+    );
+
+    const commodityMostRecord = filteredData.reduce((counter, item) => {
+      counter[item.komoditas] = (counter[item.komoditas] || 0) + 1;
+      return counter;
+    }, {});
+
+    const commodityMostRecordPrice = Math.max.apply(
+      null,
+      Object.values(commodityMostRecord)
+    );
+
+    const commodityMostRecordName = Object.keys(commodityMostRecord).find(
+      (key) => commodityMostRecord[key] === commodityMostRecordPrice
+    );
+
+    return [
+      {
+        title: "Total Commodities Count",
+        value: filteredData.length,
+      },
+      {
+        title: "Total Commodity Categories",
+        value: commodityCategories.length,
+      },
+      {
+        title: "Highest Commodity Recorded",
+        value: `${commodityMostRecordName} - ${commodityMostRecordPrice}`,
+      },
+      {
+        title: "Total Areas in Indonesia",
+        value: areaCategories.length,
+      },
+      {
+        title: "Highest Commodity Price",
+        value: `${
+          highestCommodityName.komoditas
+        } - Rp. ${highestCommodityPrice.toLocaleString("in", "ID")}`,
+      },
+      {
+        title: "Cheapest Commodity Price",
+        value: `${
+          lowestCommodityName.komoditas
+        } - Rp. ${lowestCommodityPrice.toLocaleString("in", "ID")}`,
+      },
+    ];
+  }
+
   async add({ commodity, province, town, size, price }) {
     await axios.post(
       "https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list",

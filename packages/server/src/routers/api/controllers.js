@@ -81,6 +81,23 @@ const getCategories = async (req, res, next) => {
   }
 };
 
+const getStatistics = async (req, res, next) => {
+  try {
+    const action = new FisheryAction();
+
+    const project = await action.getAllStatistics();
+
+    const result = {
+      message: "Successfully get all statistics",
+      data: project,
+    };
+
+    res.status(200).json(result);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const createFishery = async (req, res, next) => {
   const { commodity, province, town, size, price } = req.body;
 
@@ -153,6 +170,7 @@ module.exports = {
   getAllFisheryByFilter,
   getFisheryById,
   getCategories,
+  getStatistics,
   createFishery,
   updateFishery,
   deleteFishery,

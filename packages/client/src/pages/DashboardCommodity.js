@@ -15,7 +15,7 @@ const DashboardCommodity = () => {
       try {
         const { data } = await axios.get(`${API_URL}/fishery/categories`);
         setCommodityCategories(data?.data?.commodity);
-      } catch (error) {
+      } catch (e) {
         toast.error(e.message || "Server Error", {
           position: "top-right",
           icon: "😵",
