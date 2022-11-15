@@ -2,7 +2,6 @@
   "name": "server",
   "version": "1.0.0",
   "main": "src/cli.js",
-  "type": "module",
   "bin": {
     "@yourname/create-project": "bin/create-project.js",
     "create-project": "bin/create-project.js"
