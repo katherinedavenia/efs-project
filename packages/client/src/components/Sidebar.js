@@ -15,7 +15,7 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        width: "250px",
+        width: { md: "230px", lg: "250px" },
         height: "100vh",
         backgroundColor: "#dbf3ec",
         position: "fixed",
@@ -41,7 +41,7 @@ const Sidebar = () => {
               >
                 <WarehouseOutlined />
               </ListItemIcon>
-              <ListItemText primary="View All" />
+              <ListItemText primary="General" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>

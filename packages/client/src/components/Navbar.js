@@ -9,7 +9,7 @@ const Navbar = () => (
       backgroundColor: "#fff",
       borderBottom: "2px solid #e8e8e8",
       position: "fixed",
-      width: "calc(100vw - 250px)",
+      width: { md: "calc(100vw - 230px)", lg: "calc(100vw - 250px)" },
       zIndex: 30,
     }}
   >

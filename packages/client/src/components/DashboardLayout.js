@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }) => {
   return (
     <>
       <Sidebar />
-      <Box sx={{ pl: "250px" }}>
+      <Box sx={{ pl: { md: "230px", lg: "250px" } }}>
         <Navbar />
         <Box sx={{ minHeight: "100vh", color: "black", pt: "70px" }}>
           {children}

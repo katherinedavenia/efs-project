@@ -20,7 +20,13 @@ const FilterByDate = ({ pickedDate, setPickedDate }) => {
         alignItems: "center",
       }}
     >
-      <Typography sx={{ fontSize: "20px", fontWeight: 200, mr: "12px" }}>
+      <Typography
+        sx={{
+          fontSize: { md: "16px", lg: "20px" },
+          fontWeight: 200,
+          mr: "12px",
+        }}
+      >
         Filter from
       </Typography>
       <TextField
@@ -28,9 +34,17 @@ const FilterByDate = ({ pickedDate, setPickedDate }) => {
         name="date-start"
         type="date"
         value={pickedDate.start}
-        onChange={(event) => setPickedDate({ ...pickedDate, start: event.target.value })}
+        onChange={(event) =>
+          setPickedDate({ ...pickedDate, start: event.target.value })
+        }
       />
-      <Typography sx={{ fontSize: "20px", fontWeight: 200, mx: "12px" }}>
+      <Typography
+        sx={{
+          fontSize: { md: "16px", lg: "20px" },
+          fontWeight: 200,
+          mx: "12px",
+        }}
+      >
         to
       </Typography>
       <TextField
@@ -53,7 +67,13 @@ const FilterByArea = ({ areaCategories, pickedArea, setPickedArea }) => {
         alignItems: "center",
       }}
     >
-      <Typography sx={{ fontSize: "20px", fontWeight: 200, mr: "12px" }}>
+      <Typography
+        sx={{
+          fontSize: { md: "16px", lg: "20px" },
+          fontWeight: 200,
+          mr: "12px",
+        }}
+      >
         Filter by
       </Typography>
       <FormControl sx={{ width: "100px" }}>
@@ -89,7 +109,13 @@ const FilterBySize = ({ sizeCategories, pickedSize, setPickedSize }) => {
         ml: "30px",
       }}
     >
-      <Typography sx={{ fontSize: "20px", fontWeight: 200, mr: "12px" }}>
+      <Typography
+        sx={{
+          fontSize: { md: "16px", lg: "20px" },
+          fontWeight: 200,
+          mr: "12px",
+        }}
+      >
         Filter by
       </Typography>
       <FormControl sx={{ width: "100px" }}>
@@ -149,7 +175,13 @@ const FilterByPrice = ({ pickedPrice, setPickedPrice }) => {
         mb: "20px",
       }}
     >
-      <Typography sx={{ fontSize: "20px", fontWeight: 200, mr: "26px" }}>
+      <Typography
+        sx={{
+          fontSize: { md: "16px", lg: "20px" },
+          fontWeight: 200,
+          mr: "26px",
+        }}
+      >
         Filter by Price
       </Typography>
       <Slider

@@ -51,7 +51,7 @@ const Commodity = ({ data }) => {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "repeat(5, 1fr)",
+        gridTemplateColumns: { md: "repeat(4, 1fr)", lg: "repeat(5, 1fr)" },
       }}
     >
       <OptionContainer
