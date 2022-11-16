@@ -17,9 +17,9 @@
 
 How to run the development server:
 ```bash
-npm install # or yarn install
+npm install
 then
-npm run start # or yarn run start
+npm run start
 ```
 
 
