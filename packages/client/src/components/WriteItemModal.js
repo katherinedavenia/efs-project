@@ -27,7 +27,7 @@ const WriteItemModal = ({
       commodity: data?.commodity,
       area: data?.area,
       size: data?.size,
-      price: data?.price.slice(3).replace(/\s./g, ""),
+      price: data?.price,
     },
   });
 
@@ -109,7 +109,16 @@ const WriteItemModal = ({
           }}
         >
           <Button
-            onClick={() => onClick(formik)}
+            disabled={
+              !formik.values.commodity ||
+              !formik.values.area ||
+              !formik.values.size ||
+              !formik.values.price
+            }
+            onClick={() => {
+              onClick(formik);
+              setOpenWriteModal({ isOpen: false });
+            }}
             variant="contained"
             sx={{ mt: "30px", color: "#fff" }}
           >
