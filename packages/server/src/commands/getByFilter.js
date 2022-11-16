@@ -44,6 +44,6 @@ exports.handler = async (args) => {
       console.log("Sorry. Data not found!");
     }
   } else {
-    console.log("masukin filternya cok");
+    console.log("Please enter your filter option. See help: fishery get-filter --help");
   }
 };
