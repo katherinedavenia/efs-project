@@ -17,14 +17,18 @@
 
 How to run the development server:
 ```bash
-TBA
+npm install # or yarn install
+then
+npm run start # or yarn run start
 ```
 
 
 ## The server side can also be used as an CLI App ‼️🥳
 How to use:
 ```bash
-TBA
+cd packages/server
+npm install -g . 
+fishery --help # to see all the commands
 ```
 > For the full CLI App docs go check in src/packages/server/README.md
 
