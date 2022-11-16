@@ -2,7 +2,7 @@
 [React.js]: https://reactjs.org/docs
 [Lerna]: https://lerna.js.org/
 [eFishery]: https://efishery.com/en/
-[README.md]: https://github.com/katherinedavenia/efs-project/blob/master/packages/server/README.md
+[CLI App Docs]: https://github.com/katherinedavenia/efs-project/blob/master/packages/server/README.md
 
 ## <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" alt="waving gif" width="40" height="35" /> Welcome to this project ✨!
 
@@ -31,7 +31,7 @@ cd packages/server
 npm install -g . 
 fishery --help # to see all the commands
 ```
-> For the full CLI App docs go check in this [README.md]
+> View the full [CLI App Docs]
 
 ## 🔨 Resources & Thoughts
 
