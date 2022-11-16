@@ -41,7 +41,7 @@ const DashboardCommodityDetails = () => {
     () => ({
       size: pickedSize,
       area,
-      startPirce: pickedPrice[0] || "",
+      startPrice: pickedPrice[0] || "",
       endPrice: pickedPrice[1] || "",
       startDate: pickedDate?.start || "",
       endDate: pickedDate?.end || "",
