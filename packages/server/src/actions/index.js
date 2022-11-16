@@ -18,6 +18,8 @@ class GetFisheryAction {
   async getAllByFilter({
     commodity,
     area,
+    town,
+    province,
     size,
     startPrice,
     endPrice,
@@ -26,9 +28,17 @@ class GetFisheryAction {
   }) {
     const commodityPath = commodity ? `"komoditas":"${commodity}"` : "";
     const areaPath = area ? `"area_kota":"${area}"` : "";
+    const townPath = town ? `"area_kota":"${town}"` : "";
+    const provincePath = province ? `"area_provinsi":"${province}"` : "";
     const sizePath = size ? `"size":"${size}"` : "";
 
-    const paths = [commodityPath, areaPath, sizePath].filter((path) => !!path);
+    const paths = [
+      commodityPath,
+      areaPath,
+      townPath,
+      provincePath,
+      sizePath,
+    ].filter((path) => !!path);
 
     const { data } = await axios.get(
       `https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list?search={${paths.join(
@@ -36,31 +46,20 @@ class GetFisheryAction {
       )}}`
     );
 
-    const filteringDate = startDate && endDate;
-    const filteringPrice = startPrice && endPrice;
-
     const filteredData = data
       .filter((value) => JSON.stringify(value) !== "{}")
       .sort(function (a, b) {
         return new Date(b.tgl_parsed) - new Date(a.tgl_parsed);
       });
-
+ 
     const newData = filteredData.filter((item) => {
-      if (filteringDate || filteringPrice) {
-        return (
-          (!filteringDate ||
-            (moment(item.tgl_parsed).isBefore(endDate, "date") &&
-              moment(item.tgl_parsed).isAfter(startDate, "date")) ||
-            moment(item.tgl_parsed).isSame(startDate, "date") ||
-            moment(item.tgl_parsed).isSame(endDate, "date")) &&
-          (!filteringPrice ||
-            (Number(item.price) > Number(startPrice) &&
-              Number(item.price) < Number(endPrice)) ||
-            Number(item.price) === Number(startPrice) ||
-            Number(item.price) === Number(endPrice))
-        );
-      }
-      return true;
+      const parsedDate = moment(item.tgl_parsed);
+      const price = Number(item.price);
+
+      return (!startDate || parsedDate.isSameOrAfter(startDate, "date"))
+        && (!endDate || parsedDate.isSameOrBefore(endDate, "date"))
+        && (!startPrice || Number(startPrice) <= price)
+        && (!endPrice || price <= Number(endPrice))
     });
 
     return newData;

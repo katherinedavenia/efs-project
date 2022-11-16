@@ -18,8 +18,17 @@ const getAllFishery = async (req, res, next) => {
 };
 
 const getAllFisheryByFilter = async (req, res, next) => {
-  const { commodity, area, size, startPrice, endPrice, startDate, endDate } =
-    req.query;
+  const {
+    commodity,
+    area,
+    town,
+    province,
+    size,
+    startPrice,
+    endPrice,
+    startDate,
+    endDate,
+  } = req.query;
 
   try {
     const action = new FisheryAction();
@@ -27,6 +36,8 @@ const getAllFisheryByFilter = async (req, res, next) => {
     const project = await action.getAllByFilter({
       commodity,
       area,
+      town,
+      province,
       size,
       startPrice,
       endPrice,
