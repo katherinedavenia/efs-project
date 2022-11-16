@@ -16,11 +16,11 @@ See help:
 List of commands:
 ```bash
 * fishery get <option(optional)>   
-  ## options:
+  ## option:
   --id <id>                get data by id             [string]
 
 * fishery get-filter <option(required)>
-  ## options:
+  ## option:
   --commodity <commodity>  filter by commodity        [string]
   --town <town>            filter by town             [string]
   --province <province>    filter by province         [string]
