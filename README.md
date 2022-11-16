@@ -48,6 +48,6 @@ To learn more about the stacks I used, take a look at the following resources:
 - add PropTypes
 - create unit testing with Jest
 - setup ES6
-- containarize CLI App (sorry in advance if it doesn't work on your computer😢)
+- containerize CLI App (sorry in advance if it doesn't work on your computer😢, but hopefully it works)
 
 Well, I guess that's about it! Thank you for visiting. I'd love to connect more with you! Email me at katherinedavenia24@gmail.com and find me on Linkedin! [<img alt="Linkedin" src="https://img.shields.io/badge/linkedin-blue?style=social&logo=linkedin">][linkedin]. Cheers!🥂
